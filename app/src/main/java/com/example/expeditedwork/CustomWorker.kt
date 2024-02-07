@@ -24,6 +24,14 @@ class CustomWorker constructor(
 ) {
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
+        //As in Android 12 and higher you can't start a foreground Services while running in the Background
+        try {
+            //When you are using Android 12 and higher
+            setForeground(getForegroundInfo(applicationContext))
+        }catch (e : Exception){
+            Result.failure()
+        }
+
         delay(20000)
         Log.d("CustomWorker","Success!")
         return Result.Success()
